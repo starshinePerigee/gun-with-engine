@@ -63,3 +63,9 @@ func move_ship(delta):
 func _process(delta):
 	rotate_ship_clamped(delta, get_target_angle())
 	move_ship(delta)
+
+
+func _on_area_2d_body_entered(body):
+	if body.name == "RigidBody2D":
+		hide()
+		$Area2D/CollisionPolygon2D.set_deferred("disabled", true)

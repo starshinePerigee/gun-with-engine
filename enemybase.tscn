@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://dreqg134bav4l"]
+
+[ext_resource type="Script" path="res://enemybase.gd" id="1_440gy"]
+
+[node name="EnemyBase" type="Node2D"]
+script = ExtResource("1_440gy")
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+gravity_scale = 0.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RigidBody2D"]
+polygon = PackedVector2Array(-60, 0, 0, -50, 60, 0, 0, 80)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.270588, 1, 1, 1)
+polygon = PackedVector2Array(-60, 0, 0, -50, 60, 0, 0, 80)
