@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3avwhqlpip51"]
+
+[ext_resource type="PackedScene" uid="uid://04kba1s4rs0m" path="res://player.tscn" id="1_02m18"]
+[ext_resource type="PackedScene" uid="uid://dd4xm61kv0n82" path="res://laser.tscn" id="2_nmrla"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_02m18")]
+
+[node name="Area2D2" parent="Player" instance=ExtResource("2_nmrla")]
+z_index = -4
+rotation = -1.5708

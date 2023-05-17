@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://04kba1s4rs0m"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_saecm"]
+[ext_resource type="Texture2D" uid="uid://bcmqyxoqxvvsw" path="res://svgs/ship.svg" id="1_xjt1e"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0sret"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_xjt1e")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Player" type="Node2D"]
+script = ExtResource("1_saecm")
+metadata/_edit_lock_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -10)
+scale = Vector2(0.25, 0.25)
+sprite_frames = SubResource("SpriteFrames_0sret")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(0, -10)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+scale = Vector2(0.25, 0.25)
+polygon = PackedVector2Array(-55, -28, -52, -180, -10, -195, 9, -195, 51, -180, 55, -28, 171, 7, 169, 91, 61, 113, 63, 175, 8, 196, -9, 196, -62, 175, -61, 113, -169, 90, -172, 7)

@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://dd4xm61kv0n82"]
+
+[ext_resource type="Script" path="res://laser.gd" id="1_bd3en"]
+
+[node name="Area2D" type="Area2D"]
+script = ExtResource("1_bd3en")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -1.0
+offset_top = -2.0
+offset_right = 1999.0
+offset_bottom = 4.0
+grow_vertical = 2
+color = Color(1, 0, 0.529412, 1)
