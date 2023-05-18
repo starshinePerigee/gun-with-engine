@@ -66,6 +66,5 @@ func _process(delta):
 
 
 func _on_area_2d_body_entered(body):
-	if body.name == "RigidBody2D":
-		hide()
-		$Area2D/CollisionPolygon2D.set_deferred("disabled", true)
+	hide()
+	$Area2D/CollisionPolygon2D.set_deferred("disabled", true)

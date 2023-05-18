@@ -17,7 +17,8 @@ func _on_visible_on_screen_notifier_2d_screen_exited():
 	queue_free()
 
 
-func die():
-	print("am dead")
-	hide()
-	$RigidBody2D/CollisionPolygon2D.disabled = true
+func die(target_name):
+	if target_name == name:
+		hide()
+		$CollisionPolygon2D.set_deferred("disabled", true)
+		queue_free()

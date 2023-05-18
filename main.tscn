@@ -7,12 +7,13 @@
 
 [sub_resource type="Curve2D" id="Curve2D_vgdel"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 700, 0, 0, 0, 0, 1000, 700, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 1000, 700, 0, 0, 0, 0, 0, 700, 0, 0, 0, 0, 0, 0)
 }
 point_count = 5
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_sqxsp")
+enemy_scene = ExtResource("3_81kwa")
 
 [node name="Player" parent="." instance=ExtResource("1_02m18")]
 
@@ -21,12 +22,12 @@ z_index = -4
 rotation = -1.5708
 
 [node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 0.2
+autostart = true
 
-[node name="Path2D" type="Path2D" parent="."]
+[node name="MobPath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_vgdel")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
-rotation = 1.5708
+[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 
-[node name="EnemyBase" parent="." instance=ExtResource("3_81kwa")]
-position = Vector2(609, 143)
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

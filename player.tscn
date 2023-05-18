@@ -15,6 +15,7 @@ animations = [{
 }]
 
 [node name="Player" type="Node2D"]
+scale = Vector2(0.75, 0.75)
 script = ExtResource("1_saecm")
 metadata/_edit_lock_ = true
 
