@@ -1,9 +1,12 @@
 extends Node2D
 
 @export var speed = 650
+@export var acceleration = 800
+@export var braking_factor = 1.5  # percent of acceleration
 @export var rotation_degrees_per_second = 420
 
 var max_rotation_radians = deg_to_rad(rotation_degrees_per_second)
+var current_velocity = Vector2()
 
 var screen_size
 
@@ -51,10 +54,27 @@ func move_ship(delta):
 	if Input.is_action_pressed("ui_down"):
 		velocity.y += 1
 		
-	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
+	velocity = velocity.normalized()
 		
-	position += velocity * delta
+	for ax in range(2):
+		if (velocity[ax] == 0) or ((velocity[ax] < 0) != (current_velocity[ax] < 0)):
+			# velocity is opposite sign to current_velocity or velocity is 0
+			# apply the brakes
+			var braking_force = acceleration * braking_factor * delta
+			var braking_percent = abs(braking_force) / abs(current_velocity[ax])
+			if braking_percent > 1:
+				current_velocity[ax] = 0
+			else:
+				current_velocity[ax] *= 1 - braking_percent
+		
+		if velocity[ax] != 0:
+			# also apply acceleration regardless of brake status
+			var accel_force = velocity[ax] * acceleration * delta
+			current_velocity[ax] += accel_force
+			
+	current_velocity = current_velocity.limit_length(speed)
+		
+	position += current_velocity * delta
 	position.x = clamp(position.x, 0, screen_size.x)
 	position.y = clamp(position.y, 0, screen_size.y)
 
