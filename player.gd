@@ -3,6 +3,8 @@ extends Node2D
 @export var speed = 650
 @export var acceleration = 800
 @export var braking_factor = 1.5  # percent of acceleration
+@export var boost_speed = 100  # little accelleration boost when stationary
+@export var boost_threshold = 50  # threshold for boost to kick in
 @export var rotation_degrees_per_second = 420
 
 var max_rotation_radians = deg_to_rad(rotation_degrees_per_second)
@@ -55,6 +57,9 @@ func move_ship(delta):
 		velocity.y += 1
 		
 	velocity = velocity.normalized()
+	
+	# check boost
+	var boost = current_velocity.length() <= boost_threshold
 		
 	for ax in range(2):
 		if (velocity[ax] == 0) or ((velocity[ax] < 0) != (current_velocity[ax] < 0)):
@@ -70,6 +75,8 @@ func move_ship(delta):
 		if velocity[ax] != 0:
 			# also apply acceleration regardless of brake status
 			var accel_force = velocity[ax] * acceleration * delta
+			if boost:
+				accel_force += boost_speed * velocity.normalized()[ax]
 			current_velocity[ax] += accel_force
 			
 	current_velocity = current_velocity.limit_length(speed)
