@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://d3avwhqlpip51"]
+[gd_scene load_steps=8 format=3 uid="uid://d3avwhqlpip51"]
 
 [ext_resource type="PackedScene" uid="uid://04kba1s4rs0m" path="res://player.tscn" id="1_02m18"]
 [ext_resource type="Script" path="res://main.gd" id="1_sqxsp"]
 [ext_resource type="PackedScene" uid="uid://dreqg134bav4l" path="res://enemybase.tscn" id="3_81kwa"]
+[ext_resource type="PackedScene" uid="uid://b5ru52y1x1wfu" path="res://player_laser.tscn" id="4_2d1p7"]
 [ext_resource type="Script" path="res://SpawnTimer.gd" id="5_cqd0c"]
 [ext_resource type="PackedScene" uid="uid://c4gnnesq6pjp6" path="res://heat_bar.tscn" id="5_uka6i"]
 
@@ -17,6 +18,11 @@ script = ExtResource("1_sqxsp")
 enemy_scene = ExtResource("3_81kwa")
 
 [node name="Player" parent="." instance=ExtResource("1_02m18")]
+
+[node name="PlayerLaser" parent="Player" instance=ExtResource("4_2d1p7")]
+rotation = -1.5708
+laser_heat_capacity = 1.0
+laser_uptime = 0.4
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 0.2
@@ -34,5 +40,9 @@ position = Vector2(510, 672)
 wait_time = 3.0
 autostart = true
 
+[connection signal="firing_status" from="Player" to="Player/PlayerLaser" method="_on_player_firing_status"]
+[connection signal="laser_cool" from="Player/PlayerLaser" to="HeatBar" method="cooldown"]
+[connection signal="laser_heat_percent_is" from="Player/PlayerLaser" to="HeatBar" method="set_size"]
+[connection signal="laser_overheated" from="Player/PlayerLaser" to="HeatBar" method="overheat"]
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="SpawnTimer" method="_on_start_timer_timeout"]

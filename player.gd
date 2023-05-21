@@ -1,5 +1,7 @@
 extends Node2D
 
+signal firing_status(is_firing: bool)
+
 @export var speed = 650
 @export var acceleration = 800
 @export var braking_factor = 1.5  # percent of acceleration
@@ -82,16 +84,22 @@ func move_ship(delta):
 	current_velocity = current_velocity.limit_length(speed)
 		
 	position += current_velocity * delta
-	position.x = clamp(position.x, 0, screen_size.x)
-	position.y = clamp(position.y, 0, screen_size.y)
+	
+	# handle being on the edge of the screen
+	if position.x <= 0 or position.x >= screen_size.x:
+		position.x = clamp(position.x, 0, screen_size.x)
+		current_velocity.x = 0
+	if position.y <= 0 or position.y >= screen_size.y:
+		position.y = clamp(position.y, 0, screen_size.y)
+		current_velocity.y = 0
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	rotate_ship_clamped(delta, get_target_angle())
 	move_ship(delta)
-	$PlayerLaser.do_laser(delta)
-
+	firing_status.emit(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT))
+	
 
 func _on_area_2d_body_entered(body):
 	hide()

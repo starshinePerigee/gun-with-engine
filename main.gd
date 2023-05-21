@@ -16,21 +16,22 @@ func _process(delta):
 
 
 func _on_spawn_timer_timeout():
-	var mob = enemy_scene.instantiate()
-	var mob_spawn_location = get_node("MobPath/MobSpawnLocation")
-	mob_spawn_location.progress_ratio = randf()
+	pass
+#	var mob = enemy_scene.instantiate()
+#	var mob_spawn_location = get_node("MobPath/MobSpawnLocation")
+#	mob_spawn_location.progress_ratio = randf()
+##
+#	var direction = mob_spawn_location.rotation + PI / 2
+#	mob.position = mob_spawn_location.position
+##
+#	direction += randf_range(-PI / 4, PI / 4)
+#	mob.rotation = direction
+##
+#	var velocity = Vector2(randf_range(
+#		average_enemy_speed - enemy_speed_variation / 2,
+#		average_enemy_speed + enemy_speed_variation / 2
+#	), 0.0)
+#	mob.linear_velocity = velocity.rotated(direction)
 #
-	var direction = mob_spawn_location.rotation + PI / 2
-	mob.position = mob_spawn_location.position
-#
-	direction += randf_range(-PI / 4, PI / 4)
-	mob.rotation = direction
-#
-	var velocity = Vector2(randf_range(
-		average_enemy_speed - enemy_speed_variation / 2,
-		average_enemy_speed + enemy_speed_variation / 2
-	), 0.0)
-	mob.linear_velocity = velocity.rotated(direction)
-
-	add_child(mob)
-	$Player/Laser.please_die.connect(mob.die)
+#	add_child(mob)
+#	$Player/Laser.please_die.connect(mob.die)

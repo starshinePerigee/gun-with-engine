@@ -6,5 +6,5 @@
 polygon = PackedVector2Array(0, 0, 100, 0, 100, 23, 0, 12)
 script = ExtResource("1_mbo3o")
 end_color = Color(0.298039, 0.298039, 0.298039, 1)
-lifespan = 1.0
-cooltime = 0.05
+lifespan = 0.5
+cooltime = 0.03
