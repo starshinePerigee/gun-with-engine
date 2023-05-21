@@ -2,13 +2,9 @@
 
 [ext_resource type="Script" path="res://laser_graphic.gd" id="1_mbo3o"]
 
-[node name="LaserGraphic" type="Line2D"]
-points = PackedVector2Array(0, 0, 100, 0)
-width = 4.0
-default_color = Color(1, 0, 0.533333, 1)
-begin_cap_mode = 2
-end_cap_mode = 2
-round_precision = 2
+[node name="LaserGraphic" type="Polygon2D"]
+polygon = PackedVector2Array(0, 0, 100, 0, 100, 23, 0, 12)
 script = ExtResource("1_mbo3o")
-end_color = Color(0, 0.054902, 0.141176, 0)
+end_color = Color(0.298039, 0.298039, 0.298039, 1)
+lifespan = 1.0
 cooltime = 0.05

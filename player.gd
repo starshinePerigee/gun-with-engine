@@ -73,7 +73,7 @@ func move_ship(delta):
 				current_velocity[ax] *= 1 - braking_percent
 		
 		if velocity[ax] != 0:
-			# also apply acceleration regardless of brake status
+			# also apply acceleratison regardless of brake status
 			var accel_force = velocity[ax] * acceleration * delta
 			if boost:
 				accel_force += boost_speed * velocity.normalized()[ax]
@@ -90,6 +90,7 @@ func move_ship(delta):
 func _process(delta):
 	rotate_ship_clamped(delta, get_target_angle())
 	move_ship(delta)
+	$PlayerLaser.do_laser(delta)
 
 
 func _on_area_2d_body_entered(body):
