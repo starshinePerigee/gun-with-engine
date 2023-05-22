@@ -13,11 +13,20 @@ var max_rotation_radians = deg_to_rad(rotation_degrees_per_second)
 var current_velocity = Vector2()
 
 var screen_size
+var debug = false
+@export var debug_weapon: PackedScene
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
 	position = screen_size / 2
+	if get_parent() == get_tree().root:
+		debug = true
+		self.position = Vector2(200, 200)
+		var weapon = debug_weapon.instantiate()
+		weapon.rotation = -PI/2
+		firing_status.connect(weapon._on_player_firing_status)
+		add_child(weapon)
 
 
 func get_target_angle():

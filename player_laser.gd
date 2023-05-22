@@ -22,15 +22,27 @@ var last_position = Vector2()
 var last_rotation = 0.0
 var fire_remainder = 0.0
 
+var debug = false
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	fire_delay = 1.0 / fire_rate
 	cooldown_factor = laser_uptime / (1.0 - laser_uptime)
+	
+	# handling for debug
+	if get_parent() == get_tree().root:
+		debug = true
+		self.position = Vector2(200, 200)
+		$Intersect.visible = true
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if debug:
+		global_rotation = (get_global_mouse_position() - global_position).angle()
+		laser_firing = not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+		laser_locked = false
 	do_laser(delta)
 	
 
@@ -51,16 +63,6 @@ func do_laser(delta):
 			laser_overheated.emit()
 			laser_cooling_down = true
 			laser_locked = true
-		
-#		while fire_remainder >= fire_delay:
-#			fire_remainder -= fire_delay
-#			var lerp_weight = fire_remainder / delta  # int math
-#			var start_point = last_position.lerp(global_position, lerp_weight)
-#			var beam_angle = lerp_angle(last_rotation, global_rotation, lerp_weight)
-#			var end_point = Vector2(cos(beam_angle), sin(beam_angle)) * 5000
-#			end_point += start_point
-#			graphic.points[0] = start_point
-#			graphic.points[1] = end_point
 		
 		var far_point_old = Vector2(cos(last_rotation), sin(last_rotation))
 		far_point_old = far_point_old * 5000 + last_position
