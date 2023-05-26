@@ -21,7 +21,6 @@ enemy_scene = ExtResource("3_81kwa")
 
 [node name="PlayerLaser" parent="Player" instance=ExtResource("4_2d1p7")]
 rotation = -1.5708
-laser_heat_capacity = 1.0
 laser_uptime = 0.4
 
 [node name="SpawnTimer" type="Timer" parent="."]
@@ -41,6 +40,7 @@ wait_time = 3.0
 autostart = true
 
 [connection signal="firing_status" from="Player" to="Player/PlayerLaser" method="_on_player_firing_status"]
+[connection signal="knockback" from="Player/PlayerLaser" to="Player" method="apply_knockback"]
 [connection signal="laser_cool" from="Player/PlayerLaser" to="HeatBar" method="cooldown"]
 [connection signal="laser_heat_percent_is" from="Player/PlayerLaser" to="HeatBar" method="set_size"]
 [connection signal="laser_overheated" from="Player/PlayerLaser" to="HeatBar" method="overheat"]

@@ -26,6 +26,7 @@ func _ready():
 		var weapon = debug_weapon.instantiate()
 		weapon.rotation = -PI/2
 		firing_status.connect(weapon._on_player_firing_status)
+		weapon.knockback.connect(apply_knockback)
 		add_child(weapon)
 
 
@@ -101,6 +102,13 @@ func move_ship(delta):
 	if position.y <= 0 or position.y >= screen_size.y:
 		position.y = clamp(position.y, 0, screen_size.y)
 		current_velocity.y = 0
+
+
+func apply_knockback(knockback):
+	var knockback_vector = Vector2(cos(rotation+PI/2), sin(rotation+PI/2))
+	knockback_vector *= knockback
+	position += knockback_vector
+	current_velocity += knockback_vector
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
