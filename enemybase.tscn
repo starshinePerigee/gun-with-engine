@@ -5,16 +5,16 @@
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_4kagw"]
 bounce = 1.0
 
-[node name="RigidBody2D" type="RigidBody2D"]
+[node name="EnemyBase" type="RigidBody2D"]
 physics_material_override = SubResource("PhysicsMaterial_4kagw")
 gravity_scale = 0.0
 script = ExtResource("1_440gy")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+[node name="Hitbox" type="CollisionPolygon2D" parent="."]
 scale = Vector2(0.4, 0.4)
 polygon = PackedVector2Array(-60, 0, 0, -50, 60, 0, 0, 80)
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
+[node name="Sprite" type="Polygon2D" parent="."]
 scale = Vector2(0.5, 0.5)
 color = Color(0.270588, 1, 1, 1)
 polygon = PackedVector2Array(-60, 0, 0, -50, 60, 0, 0, 80)

@@ -18,6 +18,12 @@ script = ExtResource("1_sqxsp")
 enemy_scene = ExtResource("3_81kwa")
 
 [node name="Player" parent="." instance=ExtResource("1_02m18")]
+speed = 650
+acceleration = 800
+braking_factor = 1.5
+boost_speed = 100
+boost_threshold = 50
+rotation_degrees_per_second = 420
 
 [node name="PlayerLaser" parent="Player" instance=ExtResource("4_2d1p7")]
 rotation = -1.5708
@@ -40,7 +46,6 @@ wait_time = 3.0
 autostart = true
 
 [connection signal="firing_status" from="Player" to="Player/PlayerLaser" method="_on_player_firing_status"]
-[connection signal="knockback" from="Player/PlayerLaser" to="Player" method="apply_knockback"]
 [connection signal="laser_cool" from="Player/PlayerLaser" to="HeatBar" method="cooldown"]
 [connection signal="laser_heat_percent_is" from="Player/PlayerLaser" to="HeatBar" method="set_size"]
 [connection signal="laser_overheated" from="Player/PlayerLaser" to="HeatBar" method="overheat"]

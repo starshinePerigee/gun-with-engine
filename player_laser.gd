@@ -9,7 +9,8 @@ signal laser_cool
 
 var laser_firing = true
 var laser_locked = false
-@export var fire_rate = 10.0  # shots per second
+@export var fire_rate = 100.0  # shots per second
+@export var damage = 1.0
 var fire_delay
 @export var lasergraphic: PackedScene
 
@@ -19,6 +20,8 @@ var cooldown_factor = 1.0
 var laser_cooling_down = false
 var laser_heat = 0
 @export var knockback_factor = 400
+
+var raycast_params = PhysicsRayQueryParameters2D.new()
 
 var last_position = Vector2()
 var last_rotation = 0.0
@@ -37,16 +40,67 @@ func _ready():
 		debug = true
 		position = Vector2(200, 200)
 		$Intersect.visible = true
+		$DamageRayDebug.visible = true
+		$DamageRayDebug.top_level = true
+	else:
+		connect_weapon(get_parent())
+		$DamageRayDebug.visible = false
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if debug:
 		global_rotation = (get_global_mouse_position() - global_position).angle()
-		laser_firing = not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+		laser_firing = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 		laser_locked = false
-		position.x = fmod((position.x + delta * 500 - 200), 800) + 200
+		if Input.is_action_pressed("ui_right"):
+			position.x = fmod((position.x + delta * 500 - 200), 800) + 200
+		if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			$DamageRayDebug.points = []
 	do_laser(delta)
+	
+	last_position = global_position
+	last_rotation = global_rotation
+
+
+func do_laser(delta):
+	if not laser_firing or laser_cooling_down or laser_locked:
+		$LeadingEdge.visible = false
+		fire_remainder = 0.0
+		var total_cooldown = cooldown_factor * delta
+		laser_heat = clamp(laser_heat - total_cooldown, 0.0, laser_heat_capacity)
+		if laser_heat == 0:
+			laser_cooling_down = false
+			laser_cool.emit()
+	else:
+		$LeadingEdge.visible = true
+		while fire_remainder <= delta:
+			var lerp_weight = fire_remainder / delta
+			var from_position = lerp(last_position, global_position, lerp_weight)
+			var to_angle = lerp_angle(last_rotation, global_rotation, lerp_weight)
+			var to_local_vector = Vector2.from_angle(to_angle) * 5000
+			deal_damage(from_position, from_position+to_local_vector)
+			fire_remainder += fire_delay
+			
+		fire_remainder -= delta
+		
+		laser_heat = clamp(laser_heat + delta, 0.0, laser_heat_capacity)
+		if laser_heat >= laser_heat_capacity:
+			laser_overheated.emit()
+			laser_cooling_down = true
+			laser_locked = true
+		
+		knockback.emit(delta*knockback_factor)
+		draw_sweep()
+	
+	laser_heat_percent_is.emit(laser_heat / laser_heat_capacity)
+
+
+func deal_damage(from: Vector2, to: Vector2):
+	if debug:
+		$DamageRayDebug.add_point(from)
+		$DamageRayDebug.add_point(to)
+		$DamageRayDebug.add_point(from)
 
 
 func draw_sweep():
@@ -96,35 +150,14 @@ func draw_sweep():
 			$Intersect.visible = false
 
 
-func do_laser(delta):
-	if not laser_firing or laser_cooling_down or laser_locked:
-		$LeadingEdge.visible = false
-		fire_remainder = 0.0
-		var total_cooldown = cooldown_factor * delta
-		laser_heat = clamp(laser_heat - total_cooldown, 0.0, laser_heat_capacity)
-		if laser_heat == 0:
-			laser_cooling_down = false
-			laser_cool.emit()
-	else:
-		$LeadingEdge.visible = true
-		fire_remainder += delta
-		laser_heat = clamp(laser_heat + delta, 0.0, laser_heat_capacity)
-		if laser_heat >= laser_heat_capacity:
-			laser_overheated.emit()
-			laser_cooling_down = true
-			laser_locked = true
-		
-		knockback.emit(delta*knockback_factor)
-		
-		draw_sweep()
-		
-	last_position = global_position
-	last_rotation = global_rotation
-	
-	laser_heat_percent_is.emit(laser_heat / laser_heat_capacity)
-
-
 func _on_player_firing_status(is_firing):
 	laser_firing = is_firing
 	if not is_firing:
 		laser_locked = false
+
+
+func connect_weapon(parent):
+	parent.firing_status.connect(_on_player_firing_status)
+	knockback.connect(parent.apply_knockback)
+	# player is currently an area so you don't need this:
+	# raycast_params.exclude += parent

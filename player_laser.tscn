@@ -8,7 +8,7 @@ script = ExtResource("1_4fve4")
 fire_rate = 1000.0
 lasergraphic = ExtResource("2_h7hma")
 
-[node name="Line2D" type="Line2D" parent="."]
+[node name="Crosshair" type="Line2D" parent="."]
 points = PackedVector2Array(100, 0, 2000, 0)
 width = 1.0
 default_color = Color(0.541176, 0.541176, 0.541176, 0.447059)
@@ -27,3 +27,8 @@ visible = false
 z_index = 100
 color = Color(0, 1, 0, 1)
 polygon = PackedVector2Array(-5, 0, 0, 5, 5, 0, 0, -5)
+
+[node name="DamageRayDebug" type="Line2D" parent="."]
+visible = false
+width = 3.0
+default_color = Color(0, 1, 0.254902, 0.509804)

@@ -25,8 +25,7 @@ func _ready():
 		self.position = Vector2(200, 200)
 		var weapon = debug_weapon.instantiate()
 		weapon.rotation = -PI/2
-		firing_status.connect(weapon._on_player_firing_status)
-		weapon.knockback.connect(apply_knockback)
+		weapon.connect_weapon(self)
 		add_child(weapon)
 
 
