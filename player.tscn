@@ -15,8 +15,10 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Player" type="Node2D"]
-scale = Vector2(0.6, 0.6)
+[node name="Player" type="RigidBody2D"]
+gravity_scale = 0.0
+continuous_cd = 2
+linear_damp = 15.0
 script = ExtResource("1_saecm")
 debug_weapon = ExtResource("2_eivaf")
 metadata/_edit_lock_ = true
@@ -24,14 +26,12 @@ metadata/_edit_lock_ = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 20
 position = Vector2(0, -10)
-scale = Vector2(0.25, 0.25)
+scale = Vector2(0.15, 0.15)
 sprite_frames = SubResource("SpriteFrames_0sret")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 position = Vector2(0, -10)
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
-scale = Vector2(0.25, 0.25)
+scale = Vector2(0.1, 0.1)
 polygon = PackedVector2Array(-55, -28, -52, -180, -10, -195, 9, -195, 51, -180, 55, -28, 171, 7, 169, 91, 61, 113, 63, 175, 8, 196, -9, 196, -62, 175, -61, 113, -169, 90, -172, 7)
 
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

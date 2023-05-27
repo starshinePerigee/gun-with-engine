@@ -22,7 +22,6 @@ enemy_scene = ExtResource("3_81kwa")
 [node name="PlayerLaser" parent="Player" instance=ExtResource("4_2d1p7")]
 rotation = -1.5708
 laser_uptime = 0.6
-knockback_factor = 200
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 0.5
