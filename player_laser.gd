@@ -21,7 +21,7 @@ var damage_per_ray
 var cooldown_factor = 1.0
 var laser_cooling_down = false
 var laser_heat = 0
-@export var knockback_factor = 400
+@export var knockback_force = 6000
 
 var raycast_params = PhysicsRayQueryParameters2D.new()
 
@@ -93,7 +93,7 @@ func do_laser(delta):
 			laser_cooling_down = true
 			laser_locked = true
 		
-		knockback.emit(delta*knockback_factor)
+		knockback.emit(knockback_force)
 		draw_sweep()
 	
 	laser_heat_percent_is.emit(laser_heat / laser_heat_capacity)
@@ -168,5 +168,4 @@ func _on_player_firing_status(is_firing):
 func connect_weapon(parent):
 	parent.firing_status.connect(_on_player_firing_status)
 	knockback.connect(parent.apply_knockback)
-	# player is currently an area so you don't need this:
-	# raycast_params.exclude += parent
+	raycast_params.exclude += [parent]
