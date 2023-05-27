@@ -12,4 +12,7 @@ func _process(delta):
 
 
 func _on_start_timer_timeout():
+	wait_time -= 0.01
+	if wait_time < 0.05:
+		wait_time = 0.05
 	start()

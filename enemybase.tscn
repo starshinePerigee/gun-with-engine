@@ -9,6 +9,7 @@ bounce = 1.0
 physics_material_override = SubResource("PhysicsMaterial_4kagw")
 gravity_scale = 0.0
 script = ExtResource("1_440gy")
+hit_points = 2
 
 [node name="Hitbox" type="CollisionPolygon2D" parent="."]
 scale = Vector2(0.4, 0.4)

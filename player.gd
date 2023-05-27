@@ -120,3 +120,4 @@ func _process(delta):
 func _on_area_2d_body_entered(body):
 	hide()
 	$Area2D/CollisionPolygon2D.set_deferred("disabled", true)
+	$PlayerLaser.queue_free()

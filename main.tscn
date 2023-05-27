@@ -9,7 +9,7 @@
 
 [sub_resource type="Curve2D" id="Curve2D_vgdel"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 1000, 700, 0, 0, 0, 0, 0, 700, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1080, 0, 0, 0, 0, 0, 1080, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0)
 }
 point_count = 5
 
@@ -18,19 +18,14 @@ script = ExtResource("1_sqxsp")
 enemy_scene = ExtResource("3_81kwa")
 
 [node name="Player" parent="." instance=ExtResource("1_02m18")]
-speed = 650
-acceleration = 800
-braking_factor = 1.5
-boost_speed = 100
-boost_threshold = 50
-rotation_degrees_per_second = 420
 
 [node name="PlayerLaser" parent="Player" instance=ExtResource("4_2d1p7")]
 rotation = -1.5708
-laser_uptime = 0.4
+laser_uptime = 0.6
+knockback_factor = 200
 
 [node name="SpawnTimer" type="Timer" parent="."]
-wait_time = 0.2
+wait_time = 0.5
 script = ExtResource("5_cqd0c")
 
 [node name="MobPath" type="Path2D" parent="."]
@@ -39,13 +34,11 @@ curve = SubResource("Curve2D_vgdel")
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 
 [node name="HeatBar" parent="." instance=ExtResource("5_uka6i")]
-position = Vector2(510, 672)
+position = Vector2(540, 650)
 
 [node name="StartTimer" type="Timer" parent="."]
-wait_time = 3.0
 autostart = true
 
-[connection signal="firing_status" from="Player" to="Player/PlayerLaser" method="_on_player_firing_status"]
 [connection signal="laser_cool" from="Player/PlayerLaser" to="HeatBar" method="cooldown"]
 [connection signal="laser_heat_percent_is" from="Player/PlayerLaser" to="HeatBar" method="set_size"]
 [connection signal="laser_overheated" from="Player/PlayerLaser" to="HeatBar" method="overheat"]

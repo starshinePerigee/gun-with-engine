@@ -7,6 +7,7 @@
 script = ExtResource("1_4fve4")
 fire_rate = 1000.0
 lasergraphic = ExtResource("2_h7hma")
+laser_uptime = 0.7
 
 [node name="Crosshair" type="Line2D" parent="."]
 points = PackedVector2Array(100, 0, 2000, 0)

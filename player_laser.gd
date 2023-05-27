@@ -12,6 +12,8 @@ var laser_locked = false
 @export var fire_rate = 100.0  # shots per second
 @export var damage = 1.0
 var fire_delay
+@export var damage_per_second = 100.0
+var damage_per_ray
 @export var lasergraphic: PackedScene
 
 @export var laser_heat_capacity = 2.0
@@ -34,6 +36,7 @@ var debug = false
 func _ready():
 	fire_delay = 1.0 / fire_rate
 	cooldown_factor = laser_uptime / (1.0 - laser_uptime)
+	damage_per_ray = damage_per_second / fire_rate
 	
 	# handling for debug
 	if get_parent() == get_tree().root:
@@ -101,6 +104,12 @@ func deal_damage(from: Vector2, to: Vector2):
 		$DamageRayDebug.add_point(from)
 		$DamageRayDebug.add_point(to)
 		$DamageRayDebug.add_point(from)
+	raycast_params.from = from
+	raycast_params.to = to
+	var space_state = get_world_2d().direct_space_state
+	var results = space_state.intersect_ray(raycast_params)
+	if results:
+		results['collider'].take_damage(damage_per_ray)
 
 
 func draw_sweep():
